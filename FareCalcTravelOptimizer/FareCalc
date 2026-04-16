@@ -1,0 +1,112 @@
+vehicle_rates = {
+    'Economy': 10,
+    'Premium': 18,
+    'SUV': 25
+}
+
+PLATFORM_FEE = 10
+BASE_CHARGE = 30
+SURGE_HOURS = range(17, 21)
+SURGE_MULTIPLIER = 1.5
+
+
+def calculate_fare(km, vehicle_type, hour):
+    if vehicle_type not in vehicle_rates:
+        raise ValueError(f"'{vehicle_type}' is not available. We only offer: {', '.join(vehicle_rates.keys())}")
+
+    if km <= 0:
+        raise ValueError("Distance has to be more than 0 km.")
+
+    rate = vehicle_rates[vehicle_type]
+    distance_charge = km * rate
+    is_surge = hour in SURGE_HOURS
+    surge_extra = distance_charge * 0.5 if is_surge else 0
+    ride_charge = max(distance_charge + surge_extra, BASE_CHARGE)
+    total = ride_charge + PLATFORM_FEE
+
+    return {
+        "vehicle": vehicle_type,
+        "km": km,
+        "hour": hour,
+        "rate_per_km": rate,
+        "distance_charge": round(distance_charge, 2),
+        "is_surge": is_surge,
+        "surge_extra": round(surge_extra, 2),
+        "ride_charge": round(ride_charge, 2),
+        "platform_fee": PLATFORM_FEE,
+        "total": round(total, 2)
+    }
+
+
+def print_receipt(fare):
+    print("CityCab — Your Ride Estimate")
+    print(f"  Vehicle       : {fare['vehicle']}")
+    print(f"  Distance      : {fare['km']} km")
+    print(f"  Booking Time  : {fare['hour']:02d}:00 hrs")
+    print(f"  Rate          : ₹{fare['rate_per_km']} per km")
+    print(f"  Distance Fare : ₹{fare['distance_charge']:.2f}")
+
+    if fare['is_surge']:
+        print(f"  Surge (1.5x)  : +₹{fare['surge_extra']:.2f} Peak Hours")
+    else:
+        print(f"  Surge         : None  (Off-Peak)")
+
+    print(f"  Platform Fee  : ₹{fare['platform_fee']:.2f}")
+    print(f"  TOTAL         : ₹{fare['total']:.2f}")
+    print("  Thanks for riding with CityCab! ")
+
+
+def get_vehicle_type():
+    print(f"\n  Available vehicles: {', '.join(vehicle_rates.keys())}")
+    raw = input("  Vehicle type      : ").strip()
+    match = next((k for k in vehicle_rates if k.lower() == raw.lower()), raw)
+    return match
+
+
+def get_distance():
+    while True:
+        try:
+            km = float(input("  Distance (km)     : "))
+            if km <= 0:
+                print("  Distance must be greater than 0.")
+                continue
+            return km
+        except ValueError:
+            print("  Please enter a valid number.")
+
+
+def get_hour():
+    while True:
+        try:
+            hour = int(input("  Hour of booking (0-23) : "))
+            if 0 <= hour <= 23:
+                return hour
+            print("  Hour must be between 0 and 23.")
+        except ValueError:
+            print("  Please enter a whole number.")
+
+
+def main():
+    print("CityCab — FareCalc Travel Optimizer")
+    print("Surge pricing active: 5 PM to 8 PM")
+
+    while True:
+        print("\n New Ride")
+
+        vehicle = get_vehicle_type()
+        km = get_distance()
+        hour = get_hour()
+
+        try:
+            fare = calculate_fare(km, vehicle, hour)
+            print_receipt(fare)
+        except ValueError as e:
+            print(f"\n    {e}")
+
+        again = input("\n  Calculate another ride? (yes/no): ").strip().lower()
+        if again not in ("yes", "y"):
+            print("\n  Goodbye! Safe travels. \n")
+            break
+
+
+main()
