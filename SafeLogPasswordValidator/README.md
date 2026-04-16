@@ -82,8 +82,7 @@ java PasswordValidator
 SafeLogPasswordValidator/
  ├── PasswordValidator.java
  ├── README.md
- └── images/
-      └── safelog-full-execution-output.png
+ └── safelog-full-execution-output.png
 ```
 
 ---
