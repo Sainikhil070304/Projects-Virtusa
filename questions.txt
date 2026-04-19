@@ -1,0 +1,10 @@
+What is the full form of OOP?|Object Oriented Programming|Object Oriented Process|Ordered Object Programming|Online Object Programming|A
+Which of these is NOT a Java primitive type?|int|boolean|String|double|C
+What does JVM stand for?|Java Variable Machine|Java Virtual Machine|Java Verified Module|Just Virtual Method|B
+Which keyword is used to inherit a class in Java?|implements|super|this|extends|D
+What is the default value of an int variable in Java?|null|1|0|-1|C
+Which concept hides internal data using private fields?|Inheritance|Polymorphism|Encapsulation|Abstraction|C
+What does SQL stand for?|Structured Query Language|Simple Query Logic|Standard Question List|System Query Language|A
+Which loop runs at least once even if condition is false?|for loop|while loop|do-while loop|foreach loop|C
+What is the output of 5 % 2 in Java?|2|1|0|2.5|B
+Which collection allows duplicate elements in Java?|HashSet|TreeSet|ArrayList|LinkedHashSet|C
